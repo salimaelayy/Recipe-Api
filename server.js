@@ -25,4 +25,4 @@ app.listen(port, () => {
   });
 
 //use router middleware
-app.use('/recipes/', recipeRoute)
+app.use('/recipes/', recipeRoute);
