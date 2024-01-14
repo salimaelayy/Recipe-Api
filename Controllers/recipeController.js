@@ -3,7 +3,7 @@ const RecipeModel = require('../Models/recipe');
 //reading all the recipes
 
 const readAll=async(req,res,next)=>
-{
+{ 
     try {
         const dataRecepies = await RecipeModel.find()
         return res.json({
@@ -60,20 +60,29 @@ const readByTitle = async (req, res, next) => {
 
 // creating a single recipe
 const create = async (req, res, next) => {
+    const {title,category,author,origin,ingredients,steps} = req.body;
+
     try {
         const newRecipe = await RecipeModel.create({
-            title: req.body.title,
-            category: req.body.category,
-            author: req.body.author,
-            origin: req.body.origin,
-            ingredients: req.body.ingredients,
-            steps: req.body.steps
-        });
+            title,
+            category,
+            author,
+            origin,
+            ingredients,
+            steps
+        })
 
-        res.status(201).json({ data: newRecipe, message: 'New recipe added successfully' });
+        res.status(201).json({ 
+            data: newRecipe,
+            message: 'New recipe added successfully'
+        })
+
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'An error occurred' });
+        res.status(500).json({
+            error: error.message,
+            message: 'An error occurred'
+        })
     }
 };
 
@@ -86,15 +95,7 @@ const updateById=async (req,res,next)=>
             console.log('Received request with ID:', recipeId);
             
             console.log('Update data:', req.body);
-            const updateRecipe = 
-                {
-                    title: req.body.title,
-                    category:req.body.category,
-                    author:req.body.author,
-                    origin:req.body.origin,
-                    ingredients:req.body.ingredients,
-                    steps: req.body.steps
-                }
+            const {title,category,author,origin,ingredients,steps} = req.body
                 
 
             const response = await RecipeModel.findByIdAndUpdate(recipeId, { $set: updateRecipe });
